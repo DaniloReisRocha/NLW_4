@@ -1,20 +1,41 @@
+import React from "react";
 import styles from "../styles/components/ChallengeBox.module.css";
+import {
+  ChallengesContext,
+  ChallengeType,
+} from "../contexts/ChallengesContext";
 
 const ChallengeBox = () => {
-  const hasActiveCalleng = true;
+  const { activeChallenge, resetChallenge } = React.useContext(
+    ChallengesContext
+  );
+  let ilustration = "";
+  if (activeChallenge?.type) {
+    switch (activeChallenge.type) {
+      case ChallengeType.body:
+        ilustration = "icons/Ilustra.svg";
+        break;
+      case ChallengeType.eye:
+        ilustration = "icons/Eye.svg";
+        break;
+    }
+  }
   return (
     <div className={styles.challengeBoxContainer}>
-      {hasActiveCalleng ? (
+      {activeChallenge ? (
         <div className={styles.challengeActive}>
-          <header>ganhe 400 xp</header>
-
+          <header>Ganhe {activeChallenge.amount} xp</header>
           <main>
-            <img src="icons/Ilustra.svg" />
+            <img src={ilustration} />
             <strong>Novo desafio</strong>
-            <p>Levanta logo</p>
+            <p>{activeChallenge.description}</p>
           </main>
           <footer>
-            <button type="button" className={styles.challengeFiledButton}>
+            <button
+              type="button"
+              className={styles.challengeFiledButton}
+              onClick={resetChallenge}
+            >
               Falhei
             </button>
             <button type="button" className={styles.challengeSucceedeButton}>
